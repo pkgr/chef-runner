@@ -11,6 +11,7 @@ import (
 
 	"github.com/mlafeldt/chef-runner/cookbook"
 	"github.com/mlafeldt/chef-runner/driver"
+	"github.com/mlafeldt/chef-runner/driver/local"
 	"github.com/mlafeldt/chef-runner/driver/ssh"
 	"github.com/mlafeldt/chef-runner/driver/vagrant"
 	"github.com/mlafeldt/chef-runner/log"
@@ -79,6 +80,7 @@ func main() {
 		logLevel    = flag.String("l", "", "")
 		jsonFile    = flag.String("j", "", "")
 		showVersion = flag.Bool("version", false, "")
+		localMode   = flag.Bool("local", false, "")
 	)
 	flag.Usage = Usage
 	flag.Parse()
@@ -120,7 +122,7 @@ func main() {
 		Attributes: attributes,
 		Format:     *format,
 		LogLevel:   *logLevel,
-		UseSudo:    true,
+		UseSudo:    !*localMode,
 	}
 
 	log.Debugf("Provisioner = %+v\n", prov)
@@ -130,7 +132,9 @@ func main() {
 	}
 
 	var drv driver.Driver
-	if *host != "" {
+	if *localMode == true {
+		drv, err = local.NewDriver()
+	} else if *host != "" {
 		drv, err = ssh.NewDriver(*host)
 	} else {
 		drv, err = vagrant.NewDriver(*machine)
