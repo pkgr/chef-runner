@@ -4,10 +4,10 @@ go: 1.4
 
 sudo: false
 
-install: make bootstrap
+install: make bootstrap GOPATH="$PWD/Godeps/_workspace/:$GOPATH"
 
 script: make lint test
 
-branches:
-  only:
-    - master
+# branches:
+#   only:
+#     - master
