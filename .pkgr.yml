@@ -1,0 +1,4 @@
+cli: chef-runner
+targets:
+  debian-7:
+  ubuntu-14.04:
