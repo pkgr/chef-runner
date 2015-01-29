@@ -4,5 +4,4 @@ targets:
   ubuntu-12.04:
   ubuntu-14.04:
   centos-6:
-  sles-12:
   fedora-20:
